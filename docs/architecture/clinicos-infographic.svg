@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">ClinicOS — Patient to Payment</title>
+<desc id="desc">Five stages from intake to payment. Patients use Telegram. Admins and doctors use Care Board. n8n coordinates workflows with Supabase Auth, PostgreSQL and private Storage. Ollama drafts summaries for doctor review.</desc>
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#2f43a8"/></marker>
+  <marker id="arrow-muted" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#566689"/></marker>
+</defs>
+<style>
+  text{font-family:Segoe UI,Arial,sans-serif;fill:#161e41}
+  .white{fill:#fff}.soft{fill:#dbe4ff}.small{font-size:25px;fill:#455375}.name{font-size:32px;font-weight:700}
+  .tag{font-size:20px;font-weight:700;letter-spacing:2px;fill:#2f43a8}.edge{fill:none;stroke:#2f43a8;stroke-width:4}
+  .support{fill:none;stroke:#566689;stroke-width:4;stroke-dasharray:10 7}
+</style>
+<rect width="1600" height="900" fill="#edf1fa"/>
+<rect width="1600" height="150" fill="#19234c"/>
+<path d="M70 49h56v56H70z" fill="#aab8ff" rx="10"/><path d="M98 60v34m-17-17h34" stroke="#19234c" stroke-width="7"/>
+<text x="151" y="94" font-size="56" font-weight="700" class="white">ClinicOS — Patient to Payment</text>
+<text x="1530" y="88" text-anchor="end" font-size="24" class="soft">System architecture</text>
+<g transform="translate(70 178)"><rect width="280" height="108" rx="15" fill="#fff"/><rect width="280" height="6" rx="3" fill="#2f43a8"/><text x="18" y="49" font-size="25" font-weight="700">Intake</text><text x="18" y="82" font-size="21" fill="#455375">Telegram · consent</text></g>
+<g transform="translate(365 178)"><rect width="280" height="108" rx="15" fill="#fff"/><rect width="280" height="6" rx="3" fill="#2f43a8"/><text x="18" y="49" font-size="25" font-weight="700">Booking</text><text x="18" y="82" font-size="21" fill="#455375">Telegram · choose a slot</text></g>
+<g transform="translate(660 178)"><rect width="280" height="108" rx="15" fill="#fff"/><rect width="280" height="6" rx="3" fill="#2f43a8"/><text x="18" y="49" font-size="25" font-weight="700">Check-in and visit</text><text x="18" y="82" font-size="21" fill="#455375">Care Board · staff roles</text></g>
+<g transform="translate(955 178)"><rect width="280" height="108" rx="15" fill="#fff"/><rect width="280" height="6" rx="3" fill="#2f43a8"/><text x="18" y="49" font-size="25" font-weight="700">Follow-up and PDF</text><text x="18" y="82" font-size="21" fill="#455375">Care Board + Telegram</text></g>
+<g transform="translate(1250 178)"><rect width="280" height="108" rx="15" fill="#fff"/><rect width="280" height="6" rx="3" fill="#2f43a8"/><text x="18" y="49" font-size="25" font-weight="700">Invoice and payment</text><text x="18" y="82" font-size="21" fill="#455375">n8n + Care Board</text></g>
+<path d="M353 226l7 6-7 6m295-12 7 6-7 6m295-12 7 6-7 6m295-12 7 6-7 6" fill="none" stroke="#2f43a8" stroke-width="2.5"/>
+<g>
+  <rect x="70" y="327" width="380" height="170" rx="18" fill="#fff"/>
+  <text class="tag" x="100" y="370">PATIENT</text><text class="name" x="100" y="424">Telegram</text>
+  <text class="small" x="100" y="461">Booking, updates and PDF</text>
+  <rect x="1150" y="327" width="380" height="170" rx="18" fill="#fff"/>
+  <text class="tag" x="1180" y="370">ADMIN + DOCTOR</text><text class="name" x="1180" y="424">Care Board</text>
+  <text class="small" x="1180" y="461">Check-in, visits and billing</text>
+  <rect x="598" y="355" width="404" height="241" rx="24" fill="#19234c"/>
+  <text class="white" x="634" y="427" font-size="52" font-weight="700">n8n</text>
+  <text class="soft" x="635" y="469" font-size="26">Coordinates the journey</text>
+  <path d="M635 493h329" stroke="#6776ae"/>
+  <text class="white" x="635" y="538" font-size="24">Validate, route and run workers</text>
+  <text class="soft" x="635" y="568" font-size="22">Doctor review in Care Board</text>
+</g>
+<path class="edge" d="M464 417H584" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+<path class="edge" d="M1016 417h120" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+<text class="small" x="524" y="390" text-anchor="middle">Bot I/O</text>
+<text class="small" x="1076" y="390" text-anchor="middle">Actions</text>
+<path class="support" d="M800 610v49" marker-start="url(#arrow-muted)" marker-end="url(#arrow-muted)"/>
+<path class="support" d="M1332 510v149" marker-end="url(#arrow-muted)"/>
+<text class="small" x="1350" y="561">Sign-in</text><text class="small" x="1350" y="592">Board reads</text>
+<path class="support" d="M590 550H260v109" marker-start="url(#arrow-muted)" marker-end="url(#arrow-muted)"/>
+<text class="small" x="287" y="589">Visit notes / draft</text>
+<rect x="70" y="673" width="380" height="134" rx="18" fill="#fff"/>
+<text class="name" x="100" y="724">Local Ollama</text>
+<text class="small" x="100" y="765">Generates summary drafts</text>
+<rect x="484" y="673" width="1046" height="134" rx="18" fill="#dfe7fb"/>
+<text class="tag" x="512" y="710">SUPABASE</text>
+<text class="name" x="512" y="752">PostgreSQL</text><text class="small" x="512" y="782">Clinic records and queues</text>
+<text class="name" x="862" y="752">Private Storage</text><text class="small" x="862" y="782">visit-files attachments</text>
+<text class="name" x="1220" y="752">Auth</text><text class="small" x="1220" y="782">Staff identity</text>
+<path class="edge" d="M72 854h65" marker-end="url(#arrow)"/><text class="small" x="156" y="862">Workflow actions and replies</text>
+<path class="support" d="M570 854h65" marker-end="url(#arrow-muted)"/><text class="small" x="654" y="862">Data, identity and draft requests</text>
+</svg>
