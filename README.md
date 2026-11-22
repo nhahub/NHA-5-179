@@ -2,7 +2,7 @@
 
 When booking, visit notes, follow-ups, and billing live in separate places, clinic staff have to piece together the history of each visit. Patients can be left waiting for a confirmation, a follow-up time, or a summary. ClinicOS brings these handoffs into one journey. Patients use Telegram, staff use Care Board, and n8n coordinates the work.
 
-[Watch the 86-second launch film](docs/media/clinicos-launch.mp4) · [Download the architecture SVG](docs/architecture/clinicos-infographic.svg) · [Download the n8n workflow](workflows/clinicos-patient-to-payment.json)
+[Watch the 86-second launch film](docs/media/clinicos-launch.mp4) · [Download the architecture SVG](docs/architecture/clinicos-infographic.svg) · [Download the n8n workflow](workflows/clinicos-patient-to-payment.json) · [Care Board screenshots](#care-board-screenshots)
 
 ![ClinicOS architecture from intake through payment. Patients use Telegram and staff use Care Board. n8n coordinates the journey with Supabase Auth, PostgreSQL, private Storage, and local Ollama for doctor-reviewed drafts.](docs/architecture/clinicos-infographic.png)
 
@@ -18,31 +18,72 @@ Care Board uses **Supabase Auth** for staff sign-in and reads the board through 
 
 The project aims to make it easier for patients to access the clinic, give staff clearer handoffs, and show where a visit stands from booking through payment.
 
-## Import and reconnect
+## Run ClinicOS on your device
 
-1. **Get the files.** Download the workflow above or clone this repository with `git clone https://github.com/nhahub/NHA-5-179.git`. Use n8n **2.47.7**, the version used to verify the import. On a new workflow canvas, choose **Import from File** and select `workflows/clinicos-patient-to-payment.json`. Keep it unpublished while configuring it.
-2. **Provision the application dependencies.** Use a dedicated demo Supabase project with the team’s ClinicOS schema, RPCs and grants, restricted PostgreSQL roles, notification and invoice queues, staff Auth-to-role mappings, and private `visit-files` bucket. The full ClinicOS database bootstrap and Python Care Board app are supplied separately by the project team. A fresh clone contains the showcase and workflow export. For a connected install, point the supplied Care Board server at your Supabase project and n8n, set its publishable key, and run `python -B staff/server.py` from the application checkout. The app defaults to `http://127.0.0.1:8094/`.
-3. **Replace deployment placeholders.** Search the imported nodes for `https://your-project.supabase.co` and use your project URL. Replace `REPLACE_WITH_P5_ACTOR_UUID` in **Catalog form · Prepare request**, **Invoice form · Prepare request**, and **Staff catalog · Save service through P5** with the UUID mapped to your scoped P5 account. Serve `qwen3:4b-instruct-2507-q4_K_M` in Ollama and replace `http://ollama.example.invalid:11434` in **Draft summary with local Ollama** with an address reachable from n8n. The workflow uses `Africa/Cairo`.
-4. **Reconnect credentials in n8n** using the table below. Give the worker and listener accounts the grants for their respective modules. Use a direct or session-pooled PostgreSQL connection for the listeners. Put secrets in the n8n credential store.
-5. **Connect a dedicated demo bot when ready.** Once the demo install has been checked, publish it before registering that bot’s HTTPS production callback at the `clinicos-p1-telegram` webhook path. Configure Telegram’s `secret_token` to match the inbound header credential. This export was imported into a network-isolated n8n instance and re-exported with zero executions, registered webhooks, or credentials.
+You need Git, Docker with Compose, Python 3.10+, Node.js 20+ with npm, PostgreSQL's `psql` client, a fresh Supabase project, and a dedicated Telegram bot for the demo. Install [cloudflared](https://developers.cloudflare.com/tunnel/installation/) for the Telegram callback. Use fictional records.
 
-| Credential type | Where to bind it |
-| --- | --- |
-| **Postgres** | Use separate logins for the **Booking/Cancellation/Rescheduling Request** listeners, the **Waiting List Matcher/Expiry/Response** worker, the **P1 Telegram runtime/error** worker, the **P1 patient and staff identity sync** writes, the **confirmation and notification** worker, and the **invoice and lifecycle** jobs. |
-| **Supabase API** | Configure the project URL as **Host** and a server-side service-role secret. Bind the record credential to the Supabase table nodes in booking, availability, wait-list and visits. Bind the Storage credential to **P3-03 · Upload to storage**, **P3-03 · Download from storage**, and **Staff files · Fetch private attachment**. |
-| **HTTP Templated Custom Auth** | Set the **Booking/Cancellation/Rescheduling Request** RPCs and **Doctor Availability** booking RPC to use the server-side scheduling secret as the `apikey` header. Use the publishable key as `apikey` in **staff and patient session and authorized RPC** requests. Those nodes forward the caller’s bearer token. For **Invoice core**, **Catalog form**, **Catalog lookup**, and **Staff catalog**, configure a template with the publishable key and scoped P5 account email and password for sign-in. Use the publishable key as `apikey` for the subsequent RPC nodes, which forward the resulting token. |
-| **Header Auth and Telegram API** | Bind Header Auth with `X-Telegram-Bot-Api-Secret-Token` to **P1-Telegram · Receive Telegram Update**. Bind the dedicated bot’s Telegram API credential to **P1 replies**, **P4 operational messages**, and **Staff files · Send document to patient**. |
-| **Basic Auth** | Bind the dedicated admin form credential to **Catalog form · Admin sign in** and **Invoice form · Admin sign in**. Staff in Care Board sign in separately via Supabase Auth. |
+1. **Clone and start n8n.**
+
+   ```sh
+   git clone https://github.com/nhahub/NHA-5-179.git
+   cd NHA-5-179
+   docker compose up -d
+   ```
+
+   Open the n8n editor at `http://localhost:8081` and create its owner login. The Compose volume retains your n8n data across restarts. Start Ollama and download the summary model when you want to test drafting.
+
+   ```sh
+   docker compose --profile summary up -d
+   docker compose exec ollama ollama pull qwen3:4b-instruct-2507-q4_K_M
+   ```
+
+2. **Prepare Supabase.** Apply the included [migrations](supabase/migrations), create the demo accounts, and run the [fictional seed](supabase/seed.sql). Follow [Database and demo accounts](docs/local-setup.md#database-and-demo-accounts) for the exact commands, role passwords, and Auth mappings.
+
+3. **Configure the workflow.** Create credentials in the local n8n editor using the [credential table](docs/local-setup.md#n8n-credentials). Fill in the [local workflow configuration](deploy/workflow-config.example.json) as instructed, then generate a draft with the credentials already mapped. Import that file using **Import from File** on a new canvas.
+
+   ```sh
+   python -B deploy/configure-workflow.py .local/workflow-config.json .local/clinicos-import.json
+   ```
+
+4. **Start Care Board.** Copy your Supabase project URL and publishable key from its dashboard. Set the values in the terminal that will run the website.
+
+   **PowerShell**
+
+   ```powershell
+   $env:CLINICOS_SUPABASE_URL = "https://YOUR_PROJECT.supabase.co"
+   $env:CLINICOS_PUBLISHABLE_KEY = "YOUR_PUBLISHABLE_KEY"
+   python -B staff/server.py
+   ```
+
+   **Bash**
+
+   ```bash
+   export CLINICOS_SUPABASE_URL="https://YOUR_PROJECT.supabase.co"
+   export CLINICOS_PUBLISHABLE_KEY="YOUR_PUBLISHABLE_KEY"
+   python3 -B staff/server.py
+   ```
+
+   Open `http://127.0.0.1:8094` and sign in with the demo admin or doctor account. Use separate browser profiles for the two roles.
+
+5. **Publish the workflow and connect Telegram.** Follow [Publish and register the bot](docs/local-setup.md#publish-and-register-the-bot) to set the HTTPS callback and click **Publish** in n8n. Send the bot a private `/start`, then follow the fictional demo below.
 
 ## Fictional demo
 
-1. **Book.** In the demo bot, use `/register` as Lina Nader, consent, then use `/book` and choose a free 09:30 slot with the demo doctor.
+1. **Book.** In the demo bot, send `/register`, then `/agree` and `/profile`. Follow the prompts to create Lina Nader and confirm the fictional details. Use `/profiles` to find the profile number, then `/book PROFILE` and follow the prompts to book a slot with Dr. Samir Adel.
 2. **Check in.** As the admin, open the appointment date in Care Board and check Lina in.
 3. **Record the visit.** As the assigned doctor, open Lina’s visit, select **Start visit**, and save a fictional note. Find and book a 10:00 follow-up slot on a later date.
 4. **Share the summary.** Generate a draft and review it. Approve it, choose **Print approved summary**, save `visit-summary.pdf`, and upload it to the visit. Confirm the linked recipient and filename when sending to the dedicated demo chat. Finalize the visit with one general consultation.
 5. **Record payment.** After the invoice worker issues the fictional **350 EGP** invoice, record a **350 EGP** cash payment as admin. The balance is **0 EGP**.
 
 The film uses the actual Care Board interface with fictional local responses and a reconstructed Telegram conversation. Its numbers are demonstration values.
+
+## Care Board screenshots
+
+The screenshots use the fictional demo.
+
+![Admin Care Board showing the completed appointment and zero balance](docs/screenshots/care-board-admin.png)
+
+[View the doctor’s notes, approved summary, and private files](docs/screenshots/care-board-doctor.png)
 
 ## Team
 

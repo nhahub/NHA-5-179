@@ -1,0 +1,21 @@
+{
+  "supabaseUrl": "https://your-project.supabase.co",
+  "ollamaUrl": "http://ollama:11434",
+  "billingActorId": "00000000-0000-4000-8000-000000000103",
+  "credentials": {
+    "p1": {"id": "", "name": "ClinicOS P1 Runtime"},
+    "identity": {"id": "", "name": "ClinicOS Identity Sync"},
+    "listener": {"id": "", "name": "ClinicOS Scheduling Listener"},
+    "scheduling": {"id": "", "name": "ClinicOS Scheduling Worker"},
+    "notifications": {"id": "", "name": "ClinicOS Notification Worker"},
+    "invoices": {"id": "", "name": "ClinicOS Invoice Worker"},
+    "records": {"id": "", "name": "ClinicOS Supabase Records"},
+    "storage": {"id": "", "name": "ClinicOS Supabase Storage"},
+    "schedulingRpc": {"id": "", "name": "ClinicOS Scheduling RPC"},
+    "sessionRpc": {"id": "", "name": "ClinicOS Publishable Key"},
+    "billingLogin": {"id": "", "name": "ClinicOS Billing Login"},
+    "telegram": {"id": "", "name": "ClinicOS Telegram Bot"},
+    "telegramSecret": {"id": "", "name": "ClinicOS Telegram Webhook Secret"},
+    "formLogin": {"id": "", "name": "ClinicOS Billing Form Login"}
+  }
+}

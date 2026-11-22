@@ -1,0 +1,14 @@
+:8095 {
+    @telegram {
+        method POST
+        path /webhook/clinicos-p1-telegram
+    }
+
+    handle @telegram {
+        reverse_proxy n8n:5678
+    }
+
+    handle {
+        respond "Not found" 404
+    }
+}

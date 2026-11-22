@@ -1,0 +1,32 @@
+services:
+  n8n:
+    image: n8nio/n8n:2.47.7
+    ports:
+      - "127.0.0.1:${CLINICOS_N8N_PORT:-8081}:5678"
+    environment:
+      TZ: Africa/Cairo
+      GENERIC_TIMEZONE: Africa/Cairo
+      N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: "true"
+      N8N_WEBHOOK_URL: ${CLINICOS_WEBHOOK_URL:-http://localhost:8081/}
+      N8N_PROXY_HOPS: "1"
+    volumes:
+      - n8n_data:/home/node/.n8n
+
+  telegram-proxy:
+    image: caddy:2.10-alpine
+    depends_on:
+      - n8n
+    ports:
+      - "127.0.0.1:8095:8095"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+
+  ollama:
+    image: ollama/ollama:latest
+    profiles: [summary]
+    volumes:
+      - ollama_data:/root/.ollama
+
+volumes:
+  n8n_data:
+  ollama_data:
