@@ -8,7 +8,7 @@
     "saveManualExecutions": false,
     "saveDataErrorExecution": "none",
     "saveDataSuccessExecution": "none",
-    "callerPolicy": "none",
+    "callerPolicy": "workflowsFromSameOwner",
     "binaryMode": "separate"
   },
   "nodes": [
@@ -1040,7 +1040,8 @@
       "position": [
         3616,
         2464
-      ]
+      ],
+      "webhookId": "01efa750-eacb-4d55-8772-6f3cce0ec6b6"
     },
     {
       "parameters": {
@@ -1659,7 +1660,7 @@
         "query": "UPDATE public.wait_list SET status='waiting'::public.waiting_status, offer_expires_at=NULL, updated_at=now() WHERE id=$1::uuid RETURNING id, $2::uuid AS slot_event_id;",
         "options": {
           "queryBatching": "independently",
-          "queryReplacement": "={{$json.waiting_list_id}},{{$json.slot_event_id}}"
+          "queryReplacement": "={{ [$json.waiting_list_id ?? null, $json.slot_event_id ?? null] }}"
         }
       },
       "id": "67f2a3f2-9d30-4b5b-b977-7e6d1a3d2dd6",
@@ -1677,7 +1678,7 @@
         "query": "UPDATE public.available_slot_events SET status='pending', updated_at=now() WHERE id=$1::uuid RETURNING id;",
         "options": {
           "queryBatching": "independently",
-          "queryReplacement": "={{$json.slot_event_id}}"
+          "queryReplacement": "={{ [$json.slot_event_id ?? null] }}"
         }
       },
       "id": "5fa42c0e-26ff-4184-9ad1-a9bebaad2de5",
@@ -1720,7 +1721,8 @@
       "position": [
         5792,
         2464
-      ]
+      ],
+      "webhookId": "9ec757e2-06c2-4113-afbe-effbf930420d"
     },
     {
       "parameters": {
@@ -1927,7 +1929,8 @@
       "position": [
         1248,
         320
-      ]
+      ],
+      "webhookId": "0b4d5ce8-c4f7-4649-ac9f-63398dd37bc6"
     },
     {
       "parameters": {
@@ -2705,7 +2708,8 @@
       "position": [
         6848,
         320
-      ]
+      ],
+      "webhookId": "a6e6709c-84fe-4b7e-b6be-545a9d793655"
     },
     {
       "parameters": {
@@ -2721,7 +2725,8 @@
       "position": [
         7520,
         320
-      ]
+      ],
+      "webhookId": "bec95f3a-5879-42f7-85e3-8889b70a48cd"
     },
     {
       "parameters": {
@@ -3043,7 +3048,8 @@
       "position": [
         8192,
         320
-      ]
+      ],
+      "webhookId": "e6c16806-498a-4dfa-912e-5aeed9b861e4"
     },
     {
       "parameters": {
@@ -3059,7 +3065,8 @@
       "position": [
         8864,
         320
-      ]
+      ],
+      "webhookId": "21f1d1ce-404b-4006-baad-b8fa8fb577a7"
     },
     {
       "parameters": {
@@ -3338,7 +3345,8 @@
       "position": [
         7008,
         2688
-      ]
+      ],
+      "webhookId": "f766abe5-7d91-4eda-b90a-593f3a8deb9f"
     },
     {
       "parameters": {
@@ -3617,7 +3625,8 @@
       "position": [
         7840,
         2688
-      ]
+      ],
+      "webhookId": "642b80fd-5787-43d8-8298-e71835fe8eab"
     },
     {
       "parameters": {
@@ -4024,7 +4033,8 @@
       "position": [
         8512,
         2688
-      ]
+      ],
+      "webhookId": "413a0753-8ba3-4df3-be5c-b277cad382ce"
     },
     {
       "parameters": {
@@ -4422,7 +4432,8 @@
       "position": [
         13024,
         320
-      ]
+      ],
+      "webhookId": "46dd580b-3982-4cb4-8c75-6485a25b6ff4"
     },
     {
       "parameters": {
@@ -4776,7 +4787,8 @@
       "position": [
         13856,
         320
-      ]
+      ],
+      "webhookId": "5a7229df-1e9a-477e-901e-5b88f698c3c3"
     },
     {
       "parameters": {
@@ -4858,7 +4870,8 @@
       "position": [
         14528,
         320
-      ]
+      ],
+      "webhookId": "a3a974cc-d89b-418d-b961-a9449853ce3b"
     },
     {
       "parameters": {
@@ -5064,7 +5077,8 @@
       "position": [
         3456,
         5056
-      ]
+      ],
+      "webhookId": "4b27f257-4db9-4515-b11a-3b02160573c4"
     },
     {
       "parameters": {
@@ -5133,7 +5147,8 @@
       "position": [
         9024,
         2688
-      ]
+      ],
+      "webhookId": "24ecf11f-d74a-4160-bb9d-03bb6ad2484c"
     },
     {
       "parameters": {
@@ -5202,7 +5217,8 @@
       "position": [
         15552,
         320
-      ]
+      ],
+      "webhookId": "d74b1f5b-413e-4678-8bce-ac2a96f7f62d"
     },
     {
       "parameters": {
@@ -5271,7 +5287,8 @@
       "position": [
         9536,
         2688
-      ]
+      ],
+      "webhookId": "852449b6-dd67-48ba-87cb-7394bbc68958"
     },
     {
       "parameters": {
@@ -5487,7 +5504,8 @@
       "position": [
         6848,
         5504
-      ]
+      ],
+      "webhookId": "5de4c724-1c40-4a1d-8467-1f6f1bfa4c22"
     },
     {
       "parameters": {
@@ -5556,7 +5574,8 @@
       "position": [
         7360,
         5504
-      ]
+      ],
+      "webhookId": "d14cf8a9-5447-4ee7-bd8e-8ad9b64c12e4"
     },
     {
       "parameters": {
@@ -5740,7 +5759,8 @@
       "position": [
         12864,
         3584
-      ]
+      ],
+      "webhookId": "906819be-670e-4af7-94c9-2d8ce817969c"
     },
     {
       "parameters": {
@@ -5809,7 +5829,8 @@
         "path": "visit-file-send",
         "responseMode": "responseNode",
         "options": {}
-      }
+      },
+      "webhookId": "bafa3cc5-f3a7-4d50-82d8-c4acb35b2023"
     },
     {
       "id": "c58e94f9-b07e-4871-955a-f17ab2d112dc",
@@ -6099,7 +6120,8 @@
         "path": "clinicos-staff-catalog",
         "responseMode": "responseNode",
         "options": {}
-      }
+      },
+      "webhookId": "b4e323f4-346a-408c-bcf4-d82e5399b18c"
     },
     {
       "id": "ccd4eeb4-0416-4adb-803d-a16256c508a3",
