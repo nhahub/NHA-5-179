@@ -93,4 +93,4 @@ The screenshots use the fictional demo.
 | **Menna Hamed** | Doctor availability, booking, rescheduling, cancellation, and wait-list handling. The appointment lifecycle connects to Salma Hassanien’s check-in and visit flow. |
 | **Salma Hassanien** | Clinical visits, consultation notes and revisions, patient attachments, and visit finalization. The clinical workflow handles doctor review of drafts from Osama Azab’s AI workflow. |
 | **Osama Azab** | Patient notifications, reminders, feedback, support handoffs, and AI summary drafting. The doctor decides what to approve for the patient. |
-| **Moustafa Mohamed** | Team lead for integration and delivery. Owns the service catalog, invoicing, payment recording, and billing reports. Invoicing uses the performed services from Salma Hassanien’s finalized visit. |
+| **Moustafa Mohamed** | Team lead for integration and delivery. Built Care Board, the staff website, and connected it to the n8n workflow. Owns the service catalog, invoicing, payment recording, and billing reports. Invoicing uses the performed services from Salma Hassanien’s finalized visit. |
