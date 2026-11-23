@@ -392,7 +392,7 @@ function render(focus) {
   html.dir=lang === "ar" ? "rtl" : "ltr";
   document.querySelector("#skip").textContent=t("skip");
   app.innerHTML = `<header class="top"><div class="shell mast">
-    <div class="brand"><span class="mark" aria-hidden="true"></span><bdi>ClinicOS</bdi></div>
+    <div class="brand"><img class="mark" src="/clinicos-mark.svg" width="33" height="29" alt=""><bdi>ClinicOS</bdi></div>
     <div class="mast-actions">${role ? chip(role)+button("signOut") : ""}
       <button id="language" type="button" class="language" data-action="language" lang="${lang==="ar"?"en":"ar"}">${lang==="ar"?"English":"العربية"}</button>
     </div></div></header><main id="main" tabindex="-1" class="shell">

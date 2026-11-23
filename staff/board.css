@@ -59,9 +59,7 @@ h2 { font-size: clamp(1.4rem, 2.3vw, 2rem); letter-spacing: -.022em; }
 .language { min-inline-size: 70px; text-align: center; }
 .mast { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding-block: 22px; }
 .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 750; font-size: 1.16rem; }
-.mark { background: var(--accent); display: grid; place-items: center; inline-size: 33px; block-size: 33px; border-radius: 9px; position: relative; }
-.mark::before, .mark::after { content: ""; position: absolute; background: var(--on-accent); border-radius: 2px; inline-size: 15px; block-size: 3px; }
-.mark::after { transform: rotate(90deg); }
+.mark { display: block; flex: none; }
 .chip { display: inline-flex; align-items: center; font-size: .82rem; line-height: 1.35; padding: 5px 10px; border-radius: 999px; background: var(--tint); color: var(--ink); font-weight: 650; }
 .mast-actions, .actions, .section-head, .file-line { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 .section-head, .file-line { justify-content: space-between; }

@@ -28,6 +28,7 @@ UPLOAD_LIMIT = 5 * 1024 * 1024 + 32 * 1024
 
 ASSETS = {
     "/": (ROOT / "index.html", "text/html"),
+    "/clinicos-mark.svg": (ROOT / "clinicos-mark.svg", "image/svg+xml"),
     "/board.css": (ROOT / "board.css", "text/css"),
     "/staff.css": (ROOT / "staff.css", "text/css"),
     "/staff.js": (ROOT / "staff.js", "text/javascript"),
